@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop — Maison Veil</title>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .shop-hero {
+      background: var(--ink); padding: 72px 0 56px; color: var(--cream);
+      text-align: center;
+    }
+    .shop-hero h1 { font-family: var(--serif); font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 300; }
+    .shop-hero h1 em { font-style: italic; color: var(--gold); }
+    .shop-hero p { font-size: 0.85rem; color: rgba(245,240,232,0.6); margin-top: 12px; }
+
+    .shop-layout { display: grid; grid-template-columns: 240px 1fr; gap: 48px; padding: 60px 0 100px; }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {}
+    .sidebar-section { margin-bottom: 36px; }
+    .sidebar-title { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--mist); }
+    .filter-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .filter-item { display: flex; align-items: center; justify-content: space-between; }
+    .filter-item label { font-size: 0.84rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .filter-item input[type=checkbox] { width: 14px; height: 14px; accent-color: var(--ink); }
+    .filter-count { font-size: 0.72rem; color: var(--taupe); }
+    .price-range { display: flex; flex-direction: column; gap: 12px; }
+    .price-row { display: flex; gap: 10px; }
+    .price-input { flex: 1; padding: 8px 12px; border: 1px solid var(--mist); background: transparent; font-size: 0.82rem; outline: none; }
+    .price-input:focus { border-color: var(--gold); }
+    .sort-select { width: 100%; padding: 10px 12px; border: 1px solid var(--mist); background: var(--cream); font-size: 0.82rem; outline: none; cursor: pointer; }
+    .sidebar-color-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .sc-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: border-color 0.2s; }
+    .sc-dot:hover, .sc-dot.active { border-color: var(--ink); }
+    .apply-btn { width: 100%; margin-top: 8px; padding: 10px; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; background: var(--ink); color: var(--cream); border: none; cursor: pointer; transition: background 0.3s; }
+    .apply-btn:hover { background: var(--charcoal); }
+    .clear-btn { width: 100%; margin-top: 8px; padding: 8px; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; background: transparent; color: var(--taupe); border: 1px solid var(--mist); cursor: pointer; }
+
+    /* ─── MAIN ─── */
+    .shop-main {}
+    .shop-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--mist); }
+    .result-count { font-size: 0.82rem; color: var(--taupe); }
+    .toolbar-right { display: flex; align-items: center; gap: 16px; }
+    .sort-label { font-size: 0.72rem; color: var(--taupe); white-space: nowrap; }
+    .sort-inline { padding: 8px 12px; border: 1px solid var(--mist); background: transparent; font-size: 0.8rem; outline: none; cursor: pointer; }
+    .view-toggles { display: flex; gap: 4px; }
+    .view-toggle { width: 32px; height: 32px; border: 1px solid var(--mist); background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem; transition: background 0.2s; }
+    .view-toggle.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+
+    /* Active filters */
+    .active-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .filter-chip { display: flex; align-items: center; gap: 6px; padding: 4px 12px; background: var(--bone); font-size: 0.72rem; border: 1px solid var(--mist); }
+    .filter-chip button { background: none; border: none; cursor: pointer; color: var(--taupe); font-size: 0.75rem; line-height: 1; }
+
+    /* Grid / List */
+    .products-list { display: flex; flex-direction: column; gap: 24px; }
+    .product-list-item { display: grid; grid-template-columns: 180px 1fr auto; gap: 24px; align-items: center; padding: 20px; background: var(--bone); }
+    .product-list-item img { width: 100%; height: 200px; object-fit: cover; }
+    .pli-info .name { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 6px; }
+    .pli-info .desc { font-size: 0.82rem; color: var(--taupe); line-height: 1.6; max-width: 480px; }
+    .pli-actions { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+    .pli-price { font-size: 1rem; font-family: var(--serif); }
+
+    /* Pagination */
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 64px; }
+    .page-btn { width: 40px; height: 40px; border: 1px solid var(--mist); background: transparent; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .page-btn.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .page-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+    .page-btn.arrow { font-size: 1rem; }
+
+    /* Mobile filter toggle */
+    .filter-toggle { display: none; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--mist); background: transparent; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; margin-bottom: 20px; }
+    .sidebar.mobile-closed { display: block; }
+
+    @media (max-width: 1000px) {
+      .shop-layout { grid-template-columns: 1fr; }
+      .filter-toggle { display: flex; }
+      .sidebar { display: none; }
+      .sidebar.open { display: block; margin-bottom: 32px; }
+    }
+    @media (max-width: 600px) {
+      .product-list-item { grid-template-columns: 120px 1fr; }
+      .pli-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <div class="shop-hero">
+    <div class="container">
+      <h1 id="shopTitle">The <em>Collection</em></h1>
+      <p id="shopSub">AW '26 · Crafted in India, worn across the world</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span class="current" id="bcCurrent">Shop</span>
+    </div>
+
+    <button class="filter-toggle" onclick="toggleFilters()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
+      Filters &amp; Sort
+    </button>
+
+    <div class="shop-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">Categories</div>
+          <ul class="filter-list">
+            <li class="filter-item"><label><input type="checkbox" id="cat-all" checked onchange="filterCat(this,'all')"> All</label><span class="filter-count">8</span></li>
+            <li class="filter-item"><label><input type="checkbox" id="cat-women" onchange="filterCat(this,'women')"> Women</label><span class="filter-count">4</span></li>
+            <li class="filter-item"><label><input type="checkbox" id="cat-men" onchange="filterCat(this,'men')"> Men</label><span class="filter-count">2</span></li>
+            <li class="filter-item"><label><input type="checkbox" id="cat-unisex" onchange="filterCat(this,'unisex')"> Unisex</label><span class="filter-count">1</span></li>
+            <li class="filter-item"><label><input type="checkbox" id="cat-accessories" onchange="filterCat(this,'accessories')"> Accessories</label><span class="filter-count">1</span></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">Sub-type</div>
+          <ul class="filter-list">
+            <li class="filter-item"><label><input type="checkbox" data-sub="Outerwear"> Outerwear</label></li>
+            <li class="filter-item"><label><input type="checkbox" data-sub="Tops"> Tops</label></li>
+            <li class="filter-item"><label><input type="checkbox" data-sub="Bottoms"> Bottoms</label></li>
+            <li class="filter-item"><label><input type="checkbox" data-sub="Knitwear"> Knitwear</label></li>
+            <li class="filter-item"><label><input type="checkbox" data-sub="Bags"> Bags</label></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">Price Range</div>
+          <div class="price-range">
+            <div class="price-row">
+              <input class="price-input" type="number" id="priceMin" placeholder="Min ₹" min="0"/>
+              <input class="price-input" type="number" id="priceMax" placeholder="Max ₹" max="50000"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">Sort By</div>
+          <select class="sort-select" id="sidebarSort" onchange="applyFilters()">
+            <option value="default">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="new">Newest First</option>
+            <option value="sale">On Sale</option>
+          </select>
+        </div>
+
+        <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
+        <button class="clear-btn" onclick="clearFilters()">Clear All</button>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="shop-main">
+        <div class="shop-toolbar">
+          <span class="result-count" id="resultCount">Showing 8 products</span>
+          <div class="toolbar-right">
+            <span class="sort-label">Sort:</span>
+            <select class="sort-inline" id="toolbarSort" onchange="applyFilters()">
+              <option value="default">Featured</option>
+              <option value="price-asc">Price ↑</option>
+              <option value="price-desc">Price ↓</option>
+              <option value="new">Newest</option>
+              <option value="sale">On Sale</option>
+            </select>
+            <div class="view-toggles">
+              <button class="view-toggle active" id="gridBtn" onclick="setView('grid')" title="Grid view">⊞</button>
+              <button class="view-toggle" id="listBtn" onclick="setView('list')" title="List view">☰</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="active-filters" id="activeFilters"></div>
+        <div id="productOutput"></div>
+
+        <div class="pagination" id="pagination"></div>
+      </main>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.getElementById('nav-placeholder').innerHTML = renderNav('shop.html');
+    document.getElementById('footer-placeholder').innerHTML = renderFooter();
+    initMobileNav();
+
+    let currentView = 'grid';
+    let activeCat = 'all';
+    const PER_PAGE = 8;
+    let currentPage = 1;
+
+    // Parse URL param
+    const urlParams = new URLSearchParams(location.search);
+    const urlCat = urlParams.get('cat');
+    if (urlCat && urlCat !== 'all') {
+      activeCat = urlCat;
+      document.getElementById('cat-all').checked = false;
+      const cb = document.getElementById('cat-' + urlCat);
+      if (cb) cb.checked = true;
+      const titleMap = { women: 'Women\'s <em>Collection</em>', men: 'Men\'s <em>Collection</em>', accessories: '<em>Accessories</em>', unisex: 'Unisex <em>Pieces</em>' };
+      if (titleMap[urlCat]) document.getElementById('shopTitle').innerHTML = titleMap[urlCat];
+      document.getElementById('bcCurrent').textContent = urlCat.charAt(0).toUpperCase() + urlCat.slice(1);
+    }
+
+    function filterCat(el, cat) {
+      if (cat === 'all') {
+        document.querySelectorAll('[id^=cat-]:not(#cat-all)').forEach(c => c.checked = false);
+        activeCat = 'all';
+      } else {
+        document.getElementById('cat-all').checked = false;
+        activeCat = el.checked ? cat : 'all';
+        if (activeCat === 'all') document.getElementById('cat-all').checked = true;
+      }
+      applyFilters();
+    }
+
+    function toggleFilters() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function setView(v) {
+      currentView = v;
+      document.getElementById('gridBtn').classList.toggle('active', v==='grid');
+      document.getElementById('listBtn').classList.toggle('active', v==='list');
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const sort = document.getElementById('toolbarSort').value || document.getElementById('sidebarSort').value;
+      const minP = parseInt(document.getElementById('priceMin').value) || 0;
+      const maxP = parseInt(document.getElementById('priceMax').value) || Infinity;
+      const checkedSubs = [...document.querySelectorAll('[data-sub]:checked')].map(c=>c.dataset.sub);
+
+      let filtered = PRODUCTS.filter(p => {
+        if (activeCat !== 'all' && p.category !== activeCat) return false;
+        if (p.price < minP || p.price > maxP) return false;
+        if (checkedSubs.length && !checkedSubs.includes(p.sub)) return false;
+        return true;
+      });
+
+      if (sort === 'price-asc') filtered.sort((a,b) => a.price - b.price);
+      else if (sort === 'price-desc') filtered.sort((a,b) => b.price - a.price);
+      else if (sort === 'new') filtered = filtered.filter(p => p.badge === 'new').concat(filtered.filter(p => p.badge !== 'new'));
+      else if (sort === 'sale') filtered = filtered.filter(p => p.badge === 'sale').concat(filtered.filter(p => p.badge !== 'sale'));
+
+      document.getElementById('resultCount').textContent = `Showing ${filtered.length} product${filtered.length!==1?'s':''}`;
+
+      // Render active filter chips
+      const chips = [];
+      if (activeCat !== 'all') chips.push(`<span class="filter-chip">${activeCat} <button onclick="clearCat()">×</button></span>`);
+      if (minP || maxP < Infinity) chips.push(`<span class="filter-chip">₹${minP}–₹${maxP} <button onclick="clearPrice()">×</button></span>`);
+      document.getElementById('activeFilters').innerHTML = chips.join('');
+
+      renderOutput(filtered);
+      renderPagination(filtered.length);
+      initReveal();
+      Wishlist.updateIcons();
+    }
+
+    function renderOutput(products) {
+      const start = (currentPage-1)*PER_PAGE, end = start+PER_PAGE;
+      const page = products.slice(start, end);
+      const out = document.getElementById('productOutput');
+      if (!page.length) { out.innerHTML = '<div style="text-align:center;padding:80px 0;color:var(--taupe);font-size:.9rem">No products found. Try adjusting your filters.</div>'; return; }
+      if (currentView === 'grid') {
+        out.innerHTML = `<div class="products-grid">${page.map((p,i)=>renderProductCard(p,i*0.06)).join('')}</div>`;
+      } else {
+        out.innerHTML = `<div class="products-list">${page.map(p=>`
+          <div class="product-list-item">
+            <a href="product.html?id=${p.id}"><img src="${p.images[0]}" alt="${p.name}"/></a>
+            <div class="pli-info">
+              <div class="name"><a href="product.html?id=${p.id}">${p.name}</a></div>
+              <div style="font-size:.72rem;color:var(--taupe);margin:4px 0 10px">${p.sub} · ${p.category}</div>
+              ${p.badge ? `<span class="badge badge-${p.badge}" style="margin-bottom:8px;display:inline-block">${p.badge==='new'?'New':'Sale'}</span>` : ''}
+              <div class="desc">${p.description.substring(0,140)}…</div>
+            </div>
+            <div class="pli-actions">
+              <div class="pli-price">${p.oldPrice?`<span style="color:var(--rust)">${fmt(p.price)}</span> <span style="color:var(--taupe);text-decoration:line-through;font-size:.85rem">${fmt(p.oldPrice)}</span>`:fmt(p.price)}</div>
+              <a href="product.html?id=${p.id}" class="btn btn-outline" style="padding:10px 20px;font-size:.65rem">View</a>
+              <button class="btn btn-dark" style="padding:10px 20px;font-size:.65rem" onclick="quickAdd(${p.id})">Add to Cart</button>
+            </div>
+          </div>
+        `).join('')}</div>`;
+      }
+    }
+
+    function renderPagination(total) {
+      const pages = Math.ceil(total / PER_PAGE);
+      if (pages <= 1) { document.getElementById('pagination').innerHTML = ''; return; }
+      let html = `<button class="page-btn arrow" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+      for (let i=1;i<=pages;i++) html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+      html += `<button class="page-btn arrow" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
+      document.getElementById('pagination').innerHTML = html;
+    }
+
+    function goPage(p) {
+      if (p < 1 || p > Math.ceil(PRODUCTS.length/PER_PAGE)) return;
+      currentPage = p;
+      applyFilters();
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
+
+    function clearCat() { activeCat='all'; document.getElementById('cat-all').checked=true; document.querySelectorAll('[id^=cat-]:not(#cat-all)').forEach(c=>c.checked=false); applyFilters(); }
+    function clearPrice() { document.getElementById('priceMin').value=''; document.getElementById('priceMax').value=''; applyFilters(); }
+    function clearFilters() { clearCat(); clearPrice(); document.querySelectorAll('[data-sub]').forEach(c=>c.checked=false); document.getElementById('sidebarSort').value='default'; document.getElementById('toolbarSort').value='default'; applyFilters(); }
+
+    applyFilters();
+  </script>
+</body>
+</html>
