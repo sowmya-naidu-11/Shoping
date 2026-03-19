@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product — Maison Veil</title>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .product-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; padding: 48px 0 100px;
+    }
+
+    /* ─── GALLERY ─── */
+    .gallery { position: sticky; top: 90px; }
+    .gallery-main {
+      aspect-ratio: 3/4; overflow: hidden; background: var(--bone);
+      margin-bottom: 12px; position: relative;
+    }
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
+    .gallery-badge { position: absolute; top: 16px; left: 16px; }
+    .gallery-thumbs { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+    .gallery-thumb {
+      aspect-ratio: 3/4; overflow: hidden; cursor: pointer;
+      border: 2px solid transparent; transition: border-color 0.2s;
+    }
+    .gallery-thumb.active { border-color: var(--ink); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ─── PRODUCT INFO ─── */
+    .product-info-panel { padding-top: 8px; }
+    .pi-brand { font-size: 0.65rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--taupe); margin-bottom: 8px; }
+    .pi-name { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 300; line-height: 1.1; margin-bottom: 16px; }
+    .pi-price { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+    .pi-price .current { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; }
+    .pi-price .old { font-size: 1rem; color: var(--taupe); text-decoration: line-through; }
+    .pi-price .save { font-size: 0.75rem; background: var(--rust); color: #fff; padding: 2px 8px; }
+    .pi-reviews { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--mist); }
+    .stars { color: var(--gold); letter-spacing: 2px; }
+    .review-count { font-size: 0.75rem; color: var(--taupe); }
+    .divider { border: none; border-top: 1px solid var(--mist); margin: 24px 0; }
+
+    /* ─── SIZE / COLOR ─── */
+    .option-title { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .size-link { color: var(--taupe); font-size: 0.68rem; letter-spacing: 0.14em; cursor: pointer; }
+    .size-link:hover { color: var(--gold); }
+    .size-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .size-btn {
+      min-width: 48px; height: 40px; padding: 0 12px;
+      border: 1px solid var(--mist); background: transparent;
+      font-size: 0.78rem; letter-spacing: 0.1em;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .size-btn:hover { border-color: var(--ink); }
+    .size-btn.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .size-btn.sold-out { color: var(--taupe); cursor: not-allowed; position: relative; }
+    .size-btn.sold-out::after { content: ''; position: absolute; top: 50%; left: 6px; right: 6px; height: 1px; background: var(--mist); transform: rotate(-12deg); }
+    .color-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .cp-dot {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color 0.2s; outline: 2px solid transparent; outline-offset: 2px;
+    }
+    .cp-dot.active { border-color: var(--cream); outline-color: var(--ink); }
+
+    /* ─── QTY ─── */
+    .qty-row { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; }
+    .qty-control { display: flex; border: 1px solid var(--mist); }
+    .qty-btn { width: 38px; height: 46px; background: transparent; border: none; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--charcoal); transition: background 0.2s; }
+    .qty-btn:hover { background: var(--bone); }
+    .qty-val { width: 52px; height: 46px; border: none; border-left: 1px solid var(--mist); border-right: 1px solid var(--mist); text-align: center; font-size: 0.9rem; background: transparent; outline: none; }
+
+    /* ─── CTA ─── */
+    .cta-row { display: flex; gap: 12px; margin-bottom: 20px; }
+    .btn-atc { flex: 1; padding: 16px; font-size: 0.72rem; letter-spacing: 0.18em; }
+    .btn-wish { width: 52px; height: 52px; border: 1px solid var(--mist); background: transparent; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s, color 0.2s; }
+    .btn-wish:hover { border-color: var(--rust); color: var(--rust); }
+    .btn-wish.wished { border-color: var(--rust); color: var(--rust); }
+
+    /* ─── ACCORDION ─── */
+    .accordion { border-top: 1px solid var(--mist); }
+    .accordion-item { border-bottom: 1px solid var(--mist); }
+    .accordion-header {
+      width: 100%; text-align: left; background: transparent; border: none;
+      padding: 16px 0; display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer;
+      color: var(--ink);
+    }
+    .accordion-icon { transition: transform 0.3s; font-size: 1rem; color: var(--taupe); }
+    .accordion-item.open .accordion-icon { transform: rotate(45deg); }
+    .accordion-body { overflow: hidden; max-height: 0; transition: max-height 0.4s ease; }
+    .accordion-item.open .accordion-body { max-height: 400px; }
+    .accordion-inner { padding: 0 0 20px; font-size: 0.88rem; line-height: 1.8; color: var(--taupe); }
+    .accordion-inner ul { padding-left: 16px; }
+    .accordion-inner li { margin-bottom: 4px; }
+
+    /* ─── TRUST ─── */
+    .trust-row { display: flex; gap: 20px; padding: 20px 0; border-top: 1px solid var(--mist); margin-top: 4px; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.76rem; color: var(--taupe); }
+    .trust-icon { font-size: 1rem; }
+
+    /* ─── RELATED ─── */
+    .related { padding-bottom: 100px; }
+
+    /* ─── SIZE GUIDE MODAL ─── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(26,23,20,0.6); z-index: 300; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--cream); max-width: 540px; width: 90%; padding: 40px; position: relative; transform: translateY(20px); transition: transform 0.3s; }
+    .modal-overlay.open .modal { transform: none; }
+    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--taupe); }
+    .modal h3 { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 20px; }
+    .size-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .size-table th { background: var(--bone); padding: 10px 14px; text-align: left; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .size-table td { padding: 10px 14px; border-bottom: 1px solid var(--mist); }
+
+    @media (max-width: 900px) {
+      .product-layout { grid-template-columns: 1fr; gap: 32px; }
+      .gallery { position: static; }
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="nav-placeholder"></div>
+
+  <div class="container">
+    <div class="breadcrumb" id="breadcrumb">
+      <a href="index.html">Home</a><span>/</span>
+      <a href="shop.html">Shop</a><span>/</span>
+      <span class="current" id="bcName">Product</span>
+    </div>
+
+    <div class="product-layout">
+      <!-- GALLERY -->
+      <div class="gallery">
+        <div class="gallery-main">
+          <img id="mainImg" src="" alt=""/>
+          <div class="gallery-badge" id="galleryBadge"></div>
+        </div>
+        <div class="gallery-thumbs" id="thumbs"></div>
+      </div>
+
+      <!-- INFO -->
+      <div class="product-info-panel">
+        <div class="pi-brand">Maison Veil</div>
+        <h1 class="pi-name" id="piName"></h1>
+        <div class="pi-price" id="piPrice"></div>
+        <div class="pi-reviews">
+          <span class="stars">★★★★★</span>
+          <span class="review-count">4.9 (128 reviews)</span>
+        </div>
+
+        <!-- Color -->
+        <div class="option-title">Colour <span id="colorName" style="font-size:.8rem;color:var(--taupe);text-transform:none;letter-spacing:0;font-weight:300"></span></div>
+        <div class="color-row" id="colorRow"></div>
+
+        <!-- Size -->
+        <div class="option-title">Size <span class="size-link" onclick="openSizeGuide()">Size Guide</span></div>
+        <div class="size-grid" id="sizeGrid"></div>
+
+        <!-- Qty -->
+        <div class="option-title">Quantity</div>
+        <div class="qty-row">
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input class="qty-val" id="qtyVal" type="number" value="1" min="1" max="10" readonly/>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="cta-row">
+          <button class="btn btn-dark btn-atc" id="atcBtn" onclick="addProductToCart()">Add to Cart</button>
+          <button class="btn-wish" id="wishBtn" onclick="toggleWish()">♡</button>
+        </div>
+        <a href="cart.html" class="btn btn-outline btn-full" style="margin-bottom:20px">Buy Now</a>
+
+        <!-- Trust -->
+        <div class="trust-row">
+          <div class="trust-item"><span class="trust-icon">🚚</span> Free delivery over ₹5,000</div>
+          <div class="trust-item"><span class="trust-icon">↩️</span> 30-day returns</div>
+          <div class="trust-item"><span class="trust-icon">🔒</span> Secure checkout</div>
+        </div>
+
+        <!-- Accordion -->
+        <div class="accordion" id="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">Description <span class="accordion-icon">+</span></button>
+            <div class="accordion-body"><div class="accordion-inner" id="descText"></div></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">Details & Care <span class="accordion-icon">+</span></button>
+            <div class="accordion-body"><div class="accordion-inner"><ul id="detailsList"></ul></div></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">Shipping & Returns <span class="accordion-icon">+</span></button>
+            <div class="accordion-body"><div class="accordion-inner">
+              <p>Free standard shipping on all orders over ₹5,000. Express delivery available at checkout. Orders are processed within 1–2 business days.</p>
+              <p style="margin-top:10px">Returns accepted within 30 days of delivery. Items must be unworn, unwashed, and in original packaging.</p>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELATED PRODUCTS -->
+    <div class="related">
+      <div class="section-head reveal">
+        <h2>You Might <em>Also Like</em></h2>
+        <a href="shop.html" class="view-all">View All</a>
+      </div>
+      <div class="products-grid" id="relatedGrid"></div>
+    </div>
+  </div>
+
+  <!-- SIZE GUIDE MODAL -->
+  <div class="modal-overlay" id="sizeModal" onclick="closeSizeGuide(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeSizeGuide()">×</button>
+      <h3>Size Guide</h3>
+      <p style="font-size:.82rem;color:var(--taupe);margin-bottom:20px">All measurements in centimetres (cm).</p>
+      <table class="size-table">
+        <thead><tr><th>Size</th><th>Chest</th><th>Waist</th><th>Hip</th><th>Length</th></tr></thead>
+        <tbody>
+          <tr><td>XS</td><td>80–84</td><td>62–66</td><td>86–90</td><td>155–160</td></tr>
+          <tr><td>S</td><td>84–88</td><td>66–70</td><td>90–94</td><td>160–165</td></tr>
+          <tr><td>M</td><td>88–94</td><td>70–76</td><td>94–100</td><td>165–170</td></tr>
+          <tr><td>L</td><td>94–100</td><td>76–82</td><td>100–106</td><td>170–175</td></tr>
+          <tr><td>XL</td><td>100–108</td><td>82–90</td><td>106–114</td><td>175–180</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.getElementById('nav-placeholder').innerHTML = renderNav('shop.html');
+    document.getElementById('footer-placeholder').innerHTML = renderFooter();
+    initMobileNav();
+
+    const params = new URLSearchParams(location.search);
+    const pid = parseInt(params.get('id')) || 1;
+    const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+
+    let selectedSize = null;
+    let selectedColor = 0;
+    let qty = 1;
+
+    function init() {
+      document.title = `${product.name} — Maison Veil`;
+      document.getElementById('bcName').textContent = product.name;
+      document.getElementById('piName').textContent = product.name;
+
+      // Price
+      const pEl = document.getElementById('piPrice');
+      if (product.oldPrice) {
+        const save = Math.round((1 - product.price/product.oldPrice)*100);
+        pEl.innerHTML = `<span class="current">${fmt(product.price)}</span><span class="old">${fmt(product.oldPrice)}</span><span class="save">−${save}%</span>`;
+      } else {
+        pEl.innerHTML = `<span class="current">${fmt(product.price)}</span>`;
+      }
+
+      // Badge
+      if (product.badge) {
+        document.getElementById('galleryBadge').innerHTML = `<span class="badge badge-${product.badge}">${product.badge==='new'?'New':'Sale'}</span>`;
+      }
+
+      // Gallery
+      setMainImg(product.images[0]);
+      const thumbs = document.getElementById('thumbs');
+      thumbs.innerHTML = product.images.map((img,i)=>`
+        <div class="gallery-thumb ${i===0?'active':''}" onclick="setMainImg('${img}', this)">
+          <img src="${img}" alt="View ${i+1}" loading="lazy"/>
+        </div>`).join('');
+
+      // Colors
+      const cr = document.getElementById('colorRow');
+      cr.innerHTML = product.colors.map((c,i)=>`<button class="cp-dot ${i===0?'active':''}" style="background:${c}" onclick="selectColor(this,${i},'${c}')" title="${c}"></button>`).join('');
+      document.getElementById('colorName').textContent = product.colors[0];
+
+      // Sizes
+      const sg = document.getElementById('sizeGrid');
+      sg.innerHTML = product.sizes.map(s=>`<button class="size-btn" onclick="selectSize(this,'${s}')">${s}</button>`).join('');
+
+      // Description
+      document.getElementById('descText').textContent = product.description;
+      document.getElementById('detailsList').innerHTML = product.details.map(d=>`<li>${d}</li>`).join('');
+
+      // Wishlist state
+      updateWishBtn();
+
+      // Related
+      const related = PRODUCTS.filter(p=>p.id!==product.id && (p.category===product.category || p.sub===product.sub)).slice(0,4);
+      document.getElementById('relatedGrid').innerHTML = related.map((p,i)=>renderProductCard(p,i*0.07)).join('');
+      initReveal(); Wishlist.updateIcons();
+    }
+
+    function setMainImg(src, thumb) {
+      document.getElementById('mainImg').src = src;
+      if (thumb) {
+        document.querySelectorAll('.gallery-thumb').forEach(t=>t.classList.remove('active'));
+        thumb.classList.add('active');
+      }
+    }
+
+    function selectColor(el, idx, name) {
+      document.querySelectorAll('.cp-dot').forEach(d=>d.classList.remove('active'));
+      el.classList.add('active');
+      selectedColor = idx;
+      document.getElementById('colorName').textContent = name;
+    }
+
+    function selectSize(el, size) {
+      document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+      el.classList.add('active');
+      selectedSize = size;
+    }
+
+    function changeQty(delta) {
+      qty = Math.max(1, Math.min(10, qty + delta));
+      document.getElementById('qtyVal').value = qty;
+    }
+
+    function addProductToCart() {
+      if (!selectedSize) {
+        showToast('Please select a size'); return;
+      }
+      Cart.add(product.id, selectedSize, qty);
+    }
+
+    function toggleWish() {
+      Wishlist.toggle(product.id);
+      updateWishBtn();
+    }
+
+    function updateWishBtn() {
+      const btn = document.getElementById('wishBtn');
+      const wished = Wishlist.has(product.id);
+      btn.textContent = wished ? '♥' : '♡';
+      btn.classList.toggle('wished', wished);
+    }
+
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      item.classList.toggle('open');
+    }
+
+    function openSizeGuide() { document.getElementById('sizeModal').classList.add('open'); }
+    function closeSizeGuide(e) {
+      if (!e || e.target === document.getElementById('sizeModal')) {
+        document.getElementById('sizeModal').classList.remove('open');
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
