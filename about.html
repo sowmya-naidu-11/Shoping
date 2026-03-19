@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Maison Veil</title>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    /* ─── HERO ─── */
+    .about-hero {
+      height: 70vh; min-height: 500px;
+      background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80') center/cover fixed;
+      display: flex; align-items: flex-end;
+      position: relative;
+    }
+    .about-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,23,20,0.75) 0%, rgba(26,23,20,0.2) 60%, transparent); }
+    .about-hero-content { position: relative; z-index: 1; padding: 72px 48px; color: var(--cream); }
+    .about-hero-eyebrow { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .about-hero-title { font-family: var(--serif); font-size: clamp(2.5rem,6vw,6rem); font-weight: 300; line-height: 0.95; }
+    .about-hero-title em { font-style: italic; color: var(--gold); }
+
+    /* ─── INTRO ─── */
+    .about-intro { padding: 100px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .intro-text {}
+    .intro-title { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 300; margin-bottom: 28px; line-height: 1.2; }
+    .intro-title em { font-style: italic; color: var(--taupe); }
+    .intro-body { font-size: 0.9rem; line-height: 1.9; color: var(--taupe); }
+    .intro-body p + p { margin-top: 16px; }
+    .intro-img { position: relative; }
+    .intro-img img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
+    .intro-img-caption { position: absolute; bottom: -16px; right: -16px; background: var(--ink); color: var(--cream); padding: 20px 24px; font-family: var(--serif); font-size: 1.1rem; font-style: italic; }
+
+    /* ─── PILLARS ─── */
+    .pillars { padding: 0 0 100px; }
+    .pillars-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; }
+    .pillar { }
+    .pillar-num { font-family: var(--serif); font-size: 3rem; font-weight: 300; color: var(--mist); line-height: 1; margin-bottom: 16px; }
+    .pillar-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 300; margin-bottom: 12px; }
+    .pillar-body { font-size: 0.85rem; line-height: 1.8; color: var(--taupe); }
+
+    /* ─── SUSTAINABILITY ─── */
+    .sustainability { background: var(--ink); color: var(--cream); padding: 100px 0; }
+    .sust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .sust-eyebrow { font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .sust-title { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 300; margin-bottom: 24px; line-height: 1.1; }
+    .sust-title em { font-style: italic; }
+    .sust-body { font-size: 0.9rem; line-height: 1.9; color: rgba(245,240,232,0.7); margin-bottom: 40px; }
+    .sust-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .sust-stat {}
+    .sust-stat-num { font-family: var(--serif); font-size: 2.5rem; font-weight: 300; color: var(--gold); }
+    .sust-stat-label { font-size: 0.78rem; color: rgba(245,240,232,0.6); margin-top: 4px; }
+    .sust-img { aspect-ratio: 4/5; overflow: hidden; }
+    .sust-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ─── TEAM ─── */
+    .team { padding: 100px 0; }
+    .team-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 32px; }
+    .team-member { text-align: center; }
+    .team-img { aspect-ratio: 1; overflow: hidden; background: var(--bone); margin-bottom: 16px; border-radius: 50%; }
+    .team-img img { width: 100%; height: 100%; object-fit: cover; }
+    .team-name { font-family: var(--serif); font-size: 1.05rem; margin-bottom: 4px; }
+    .team-role { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--taupe); }
+
+    /* ─── TIMELINE ─── */
+    .timeline { padding: 0 0 100px; }
+    .tl-items { position: relative; }
+    .tl-items::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--mist); transform: translateX(-50%); }
+    .tl-item { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .tl-item:nth-child(even) .tl-content { grid-column: 2; }
+    .tl-item:nth-child(even) .tl-spacer { grid-column: 1; grid-row: 1; }
+    .tl-content { padding: 32px; background: var(--bone); position: relative; }
+    .tl-content::before { content: ''; position: absolute; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); }
+    .tl-item:nth-child(odd) .tl-content { padding-right: 48px; }
+    .tl-item:nth-child(odd) .tl-content::before { right: -30px; }
+    .tl-item:nth-child(even) .tl-content { padding-left: 48px; }
+    .tl-item:nth-child(even) .tl-content::before { left: -30px; }
+    .tl-year { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; color: var(--gold); margin-bottom: 8px; }
+    .tl-title { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 8px; }
+    .tl-text { font-size: 0.84rem; color: var(--taupe); line-height: 1.7; }
+
+    /* ─── CTA ─── */
+    .about-cta { background: var(--bone); padding: 80px; text-align: center; margin-bottom: 0; }
+    .about-cta h2 { font-family: var(--serif); font-size: clamp(2rem,4vw,3.5rem); font-weight: 300; margin-bottom: 16px; }
+    .about-cta h2 em { font-style: italic; color: var(--taupe); }
+    .about-cta p { font-size: 0.9rem; color: var(--taupe); max-width: 480px; margin: 0 auto 40px; line-height: 1.8; }
+    .about-cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 900px) {
+      .about-intro { grid-template-columns: 1fr; gap: 40px; }
+      .pillars-grid { grid-template-columns: 1fr; gap: 32px; }
+      .sust-grid { grid-template-columns: 1fr; gap: 40px; }
+      .team-grid { grid-template-columns: repeat(2,1fr); }
+      .tl-items::before { display: none; }
+      .tl-item { grid-template-columns: 1fr; }
+      .tl-item:nth-child(even) .tl-content { grid-column: 1; }
+      .tl-content::before { display: none; }
+      .tl-item .tl-content { padding: 28px !important; }
+      .about-cta { padding: 56px 24px; }
+    }
+    @media (max-width: 600px) {
+      .team-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <!-- HERO -->
+  <div class="about-hero">
+    <div class="about-hero-content">
+      <div class="about-hero-eyebrow">Est. 2019 · Hyderabad, India</div>
+      <h1 class="about-hero-title">The Art of<br/><em>Quiet</em> Luxury</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span>/</span>
+      <span class="current">About</span>
+    </div>
+
+    <!-- INTRO -->
+    <div class="about-intro">
+      <div class="intro-text reveal">
+        <h2 class="intro-title">Where restraint<br/><em>becomes radiance.</em></h2>
+        <div class="intro-body">
+          <p>Maison Veil was born from a simple, radical belief: that the most powerful luxury speaks softly. Founded in Hyderabad in 2019 by Aryan and Meera Veil, the brand grew from a small atelier into one of India's most respected voices in considered contemporary fashion.</p>
+          <p>Every collection is a meditation on restraint — on the courage it takes to say less, to subtract instead of add, to trust in the quiet authority of exceptional fabric and precise cut.</p>
+          <p>We do not follow trends. We believe that the most enduring pieces are those that transcend them entirely. Each garment is designed to be lived in, not just worn — to age with its owner, accumulating meaning with every use.</p>
+        </div>
+      </div>
+      <div class="intro-img reveal">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700&q=80" alt="Maison Veil Atelier"/>
+        <div class="intro-img-caption">The Hyderabad Atelier</div>
+      </div>
+    </div>
+
+    <!-- PILLARS -->
+    <div class="pillars">
+      <div class="section-head reveal">
+        <h2>Our <em>Principles</em></h2>
+      </div>
+      <div class="pillars-grid">
+        <div class="pillar reveal">
+          <div class="pillar-num">01</div>
+          <div class="pillar-title">Radical Restraint</div>
+          <p class="pillar-body">We remove rather than add. Every design decision is interrogated until only what is truly necessary remains. The result is garments of unusual calm and lasting power.</p>
+        </div>
+        <div class="pillar reveal" style="transition-delay:.1s">
+          <div class="pillar-num">02</div>
+          <div class="pillar-title">Material Honesty</div>
+          <p class="pillar-body">We use only natural fibres from traceable, artisan sources. The texture, weight, and drape of our fabrics are themselves a form of expression — chosen not merely for beauty, but for truth.</p>
+        </div>
+        <div class="pillar reveal" style="transition-delay:.2s">
+          <div class="pillar-num">03</div>
+          <div class="pillar-title">Artisan Legacy</div>
+          <p class="pillar-body">Every piece involves the hands of skilled craftspeople, many from families who have practiced their craft for generations. Their knowledge is woven into every seam.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUSTAINABILITY -->
+  <div class="sustainability" id="sustainability">
+    <div class="container">
+      <div class="sust-grid">
+        <div class="reveal">
+          <div class="sust-eyebrow">Our Commitment</div>
+          <h2 class="sust-title">Making <em>fashion</em><br/>that doesn't cost the earth.</h2>
+          <p class="sust-body">Sustainability is not a marketing strategy for us — it is the only way we know how to make clothes. We use deadstock fabrics, low-impact dyes, and zero-plastic packaging. Our atelier runs on solar energy, and we plant a tree for every order.</p>
+          <div class="sust-stats">
+            <div class="sust-stat reveal"><div class="sust-stat-num">100%</div><div class="sust-stat-label">Natural fibres</div></div>
+            <div class="sust-stat reveal" style="transition-delay:.1s"><div class="sust-stat-num">12k+</div><div class="sust-stat-label">Trees planted</div></div>
+            <div class="sust-stat reveal" style="transition-delay:.2s"><div class="sust-stat-num">Zero</div><div class="sust-stat-label">Single-use plastic</div></div>
+            <div class="sust-stat reveal" style="transition-delay:.3s"><div class="sust-stat-num">40+</div><div class="sust-stat-label">Artisan families supported</div></div>
+          </div>
+        </div>
+        <div class="sust-img reveal">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=700&q=80" alt="Artisan at work"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="container">
+    <div class="timeline">
+      <div class="section-head reveal" style="margin-top:100px">
+        <h2>Our <em>Story</em></h2>
+      </div>
+      <div class="tl-items">
+        <div class="tl-item reveal">
+          <div class="tl-content">
+            <div class="tl-year">2019</div>
+            <div class="tl-title">The First Atelier</div>
+            <p class="tl-text">Maison Veil opens its first studio in Banjara Hills, Hyderabad with a team of six artisans and a debut collection of 12 pieces.</p>
+          </div>
+          <div class="tl-spacer"></div>
+        </div>
+        <div class="tl-item reveal" style="transition-delay:.1s">
+          <div class="tl-spacer"></div>
+          <div class="tl-content">
+            <div class="tl-year">2020</div>
+            <div class="tl-title">Vogue India Recognition</div>
+            <p class="tl-text">Featured in Vogue India's "The New Luxury" editorial. The Fog Linen Coat sells out in 48 hours, establishing the brand's national presence.</p>
+          </div>
+        </div>
+        <div class="tl-item reveal" style="transition-delay:.15s">
+          <div class="tl-content">
+            <div class="tl-year">2022</div>
+            <div class="tl-title">Flagship in Mumbai</div>
+            <p class="tl-text">First retail flagship opens in Mumbai's Colaba neighbourhood, designed by architect Noor Patel as a space of "lived minimalism."</p>
+          </div>
+          <div class="tl-spacer"></div>
+        </div>
+        <div class="tl-item reveal" style="transition-delay:.2s">
+          <div class="tl-spacer"></div>
+          <div class="tl-content">
+            <div class="tl-year">2025</div>
+            <div class="tl-title">Global Shipping Launch</div>
+            <p class="tl-text">Maison Veil begins shipping to 45 countries. The brand becomes the first Indian luxury label to be stocked at Dover Street Market, London.</p>
+          </div>
+        </div>
+        <div class="tl-item reveal" style="transition-delay:.25s">
+          <div class="tl-content">
+            <div class="tl-year">2026</div>
+            <div class="tl-title">AW '26 Collection</div>
+            <p class="tl-text">Our most ambitious collection to date — a meditation on shadow, weight, and the beauty of the incomplete.</p>
+          </div>
+          <div class="tl-spacer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="team container">
+    <div class="section-head reveal">
+      <h2>The <em>People</em></h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-member reveal">
+        <div class="team-img"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="Meera Veil"/></div>
+        <div class="team-name">Meera Veil</div>
+        <div class="team-role">Creative Director</div>
+      </div>
+      <div class="team-member reveal" style="transition-delay:.08s">
+        <div class="team-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Aryan Veil"/></div>
+        <div class="team-name">Aryan Veil</div>
+        <div class="team-role">Founder & CEO</div>
+      </div>
+      <div class="team-member reveal" style="transition-delay:.16s">
+        <div class="team-img"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Kavita Rao"/></div>
+        <div class="team-name">Kavita Rao</div>
+        <div class="team-role">Head of Design</div>
+      </div>
+      <div class="team-member reveal" style="transition-delay:.24s">
+        <div class="team-img"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" alt="Rahul Nair"/></div>
+        <div class="team-name">Rahul Nair</div>
+        <div class="team-role">Master Tailor</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="about-cta reveal">
+    <h2>Wear something <em>that lasts.</em></h2>
+    <p>Every piece in our collection is designed with the decades in mind. Made to be passed down, not passed over.</p>
+    <div class="about-cta-btns">
+      <a href="shop.html" class="btn btn-dark">Shop the Collection</a>
+      <a href="shop.html?cat=women" class="btn btn-outline">New Arrivals</a>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.getElementById('nav-placeholder').innerHTML = renderNav('about.html');
+    document.getElementById('footer-placeholder').innerHTML = renderFooter();
+    initMobileNav();
+    initReveal();
+  </script>
+</body>
+</html>
