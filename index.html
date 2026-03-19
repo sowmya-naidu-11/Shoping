@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maison Veil — Luxury Ready-to-Wear</title>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    /* ─── HERO ─── */
+    .hero {
+      display: grid; grid-template-columns: 55% 45%;
+      height: calc(100vh - 66px); min-height: 600px;
+      overflow: hidden;
+    }
+    .hero-left {
+      position: relative; background: var(--ink);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 80px 72px; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1000&q=80') center/cover;
+      opacity: 0.3; transform: scale(1.05);
+      animation: heroZoom 10s ease-out forwards;
+    }
+    @keyframes heroZoom { to { transform: scale(1); } }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-eyebrow { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; animation: fadeUp 0.8s 0.3s both; }
+    .hero-title { font-family: var(--serif); font-size: clamp(3.5rem,6vw,6.5rem); font-weight: 300; line-height: 0.92; color: var(--cream); animation: fadeUp 0.8s 0.5s both; }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-actions { display: flex; gap: 14px; margin-top: 48px; animation: fadeUp 0.8s 0.7s both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-right {
+      position: relative; overflow: hidden;
+      background: url('https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=900&q=80') center/cover;
+    }
+    .hero-right-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,23,20,0.35) 0%, transparent 50%); }
+    .hero-right-label { position: absolute; bottom: 40px; left: 40px; }
+    .hero-right-label span { font-family: var(--serif); font-size: 1.8rem; font-style: italic; color: var(--cream); display: block; }
+    .hero-right-label small { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(245,240,232,0.7); }
+    .hero-scroll { position: absolute; bottom: 40px; right: 40px; writing-mode: vertical-rl; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--taupe); animation: fadeUp 1s 1s both; }
+
+    /* ─── FEATURED ─── */
+    .featured { padding: 100px 0; }
+
+    /* ─── BANNER ─── */
+    .promo-banner {
+      margin: 0 0 100px; display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 460px;
+    }
+    .banner-img {
+      background: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=80') center/cover;
+      position: relative;
+    }
+    .banner-img::after { content: ''; position: absolute; inset: 0; background: rgba(26,23,20,0.2); }
+    .banner-content {
+      background: var(--bone); display: flex; flex-direction: column;
+      justify-content: center; padding: 72px 64px;
+    }
+    .banner-eyebrow { font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--taupe); margin-bottom: 20px; }
+    .banner-title { font-family: var(--serif); font-size: clamp(2rem,3.5vw,3rem); font-weight: 300; margin-bottom: 20px; line-height: 1.1; }
+    .banner-title em { font-style: italic; color: var(--taupe); }
+    .banner-text { font-size: 0.9rem; line-height: 1.8; color: var(--taupe); max-width: 380px; margin-bottom: 40px; }
+
+    /* ─── CATEGORIES ─── */
+    .categories { padding: 0 0 100px; }
+    .cat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .cat-card { position: relative; aspect-ratio: 4/5; overflow: hidden; background: var(--bone); }
+    .cat-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+    .cat-card:hover img { transform: scale(1.06); }
+    .cat-label {
+      position: absolute; inset: 0;
+      background: linear-gradient(transparent 40%, rgba(26,23,20,0.72));
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 32px;
+    }
+    .cat-name { font-family: var(--serif); font-size: 1.6rem; font-weight: 300; color: var(--cream); margin-bottom: 6px; }
+    .cat-link { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 8px; }
+    .cat-link::after { content: '→'; }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials { background: var(--ink); color: var(--cream); padding: 100px 0; text-align: center; }
+    .t-eyebrow { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 60px; }
+    .t-slide { display: none; }
+    .t-slide.active { display: block; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .t-quote { font-family: var(--serif); font-size: clamp(1.3rem,2.5vw,2.2rem); font-style: italic; font-weight: 300; max-width: 760px; margin: 0 auto 28px; line-height: 1.4; }
+    .t-author { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+    .t-dots { display: flex; justify-content: center; gap: 10px; margin-top: 48px; }
+    .t-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--taupe); border: none; cursor: pointer; transition: background 0.3s, transform 0.3s; }
+    .t-dot.active { background: var(--gold); transform: scale(1.5); }
+
+    /* ─── NEWSLETTER ─── */
+    .newsletter { padding: 100px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .nl-title { font-family: var(--serif); font-size: clamp(2rem,3.5vw,3.2rem); font-weight: 300; }
+    .nl-title em { font-style: italic; color: var(--taupe); }
+    .nl-sub { font-size: 0.88rem; color: var(--taupe); line-height: 1.8; margin: 16px 0 28px; }
+    .nl-row { display: flex; }
+    .nl-input { flex: 1; padding: 14px 18px; border: 1px solid var(--mist); border-right: none; background: transparent; font-size: 0.88rem; outline: none; transition: border-color 0.3s; }
+    .nl-input:focus { border-color: var(--gold); }
+    .nl-input::placeholder { color: var(--taupe); }
+    .nl-btn { padding: 14px 28px; background: var(--ink); color: var(--cream); border: 1px solid var(--ink); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: background 0.3s; white-space: nowrap; }
+    .nl-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+    .nl-note { font-size: 0.7rem; color: var(--taupe); margin-top: 12px; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; height: auto; }
+      .hero-left { min-height: 60vh; padding: 100px 28px 56px; }
+      .hero-right { min-height: 40vh; }
+      .promo-banner { grid-template-columns: 1fr; }
+      .banner-img { min-height: 280px; }
+      .banner-content { padding: 48px 28px; }
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .newsletter { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 600px) {
+      .hero-actions { flex-direction: column; }
+      .cat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+  <div id="marquee-placeholder"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Autumn / Winter 2026</div>
+        <h1 class="hero-title">Draped<br/>in <em>quiet</em><br/>luxury.</h1>
+        <div class="hero-actions">
+          <a href="shop.html" class="btn btn-gold">Shop Collection</a>
+          <a href="about.html" class="btn btn-outline" style="border-color:rgba(245,240,232,0.4);color:var(--cream)">Our Story</a>
+        </div>
+      </div>
+      <div class="hero-scroll">Scroll to explore</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-overlay"></div>
+      <div class="hero-right-label">
+        <span>New Season</span>
+        <small>AW '26 Collection</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="featured container">
+    <div class="section-head reveal">
+      <h2>New <em>Arrivals</em></h2>
+      <a href="shop.html" class="view-all">View All</a>
+    </div>
+    <div class="products-grid" id="featuredGrid"></div>
+  </section>
+
+  <!-- PROMO BANNER -->
+  <div class="promo-banner reveal">
+    <div class="banner-img"></div>
+    <div class="banner-content">
+      <div class="banner-eyebrow">The Maison Veil Philosophy</div>
+      <h2 class="banner-title">Where restraint<br/><em>becomes radiance.</em></h2>
+      <p class="banner-text">Founded on the belief that true luxury whispers. Each garment begins as a conversation between artisan and fabric — shaped by the pursuit of beauty in the details no one sees.</p>
+      <a href="about.html" class="btn btn-outline">Discover Our Story</a>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section class="categories container">
+    <div class="section-head reveal">
+      <h2>Shop by <em>Category</em></h2>
+    </div>
+    <div class="cat-grid reveal">
+      <a href="shop.html?cat=women" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80" alt="Women"/>
+        <div class="cat-label">
+          <span class="cat-name">Women</span>
+          <span class="cat-link">Shop Now</span>
+        </div>
+      </a>
+      <a href="shop.html?cat=men" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=600&q=80" alt="Men"/>
+        <div class="cat-label">
+          <span class="cat-name">Men</span>
+          <span class="cat-link">Shop Now</span>
+        </div>
+      </a>
+      <a href="shop.html?cat=accessories" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80" alt="Accessories"/>
+        <div class="cat-label">
+          <span class="cat-name">Accessories</span>
+          <span class="cat-link">Shop Now</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="t-eyebrow">Worn &amp; Loved</div>
+      <div id="tCarousel">
+        <div class="t-slide active"><p class="t-quote">"Every piece feels like it was made for a version of me I'm still growing into. Quietly extraordinary."</p><span class="t-author">— Priya Sharma, Mumbai</span></div>
+        <div class="t-slide"><p class="t-quote">"The drape, the texture, the silence of it all. Maison Veil doesn't just dress you — it transforms you."</p><span class="t-author">— Arjun Mehta, Delhi</span></div>
+        <div class="t-slide"><p class="t-quote">"I've never owned anything that earns so many compliments by saying so little. Absolute genius."</p><span class="t-author">— Kavya Reddy, Hyderabad</span></div>
+      </div>
+      <div class="t-dots">
+        <button class="t-dot active" onclick="goT(0)"></button>
+        <button class="t-dot" onclick="goT(1)"></button>
+        <button class="t-dot" onclick="goT(2)"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter container reveal">
+    <div>
+      <h2 class="nl-title">Join the<br/><em>Inner Circle</em></h2>
+    </div>
+    <div>
+      <p class="nl-sub">Be first to know about new collections, exclusive drops, private events, and the quiet world of Maison Veil.</p>
+      <div class="nl-row">
+        <input class="nl-input" type="email" id="nlEmail" placeholder="your@email.com"/>
+        <button class="nl-btn" onclick="subscribe()">Subscribe</button>
+      </div>
+      <p class="nl-note" id="nlNote">No spam. Unsubscribe at any time.</p>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.getElementById('nav-placeholder').innerHTML = renderNav('index.html');
+    document.getElementById('marquee-placeholder').innerHTML = renderMarquee();
+    document.getElementById('footer-placeholder').innerHTML = renderFooter();
+
+    // Render first 4 products
+    const grid = document.getElementById('featuredGrid');
+    grid.innerHTML = PRODUCTS.slice(0,4).map((p,i) => renderProductCard(p, i*0.08)).join('');
+    initReveal();
+    Wishlist.updateIcons();
+    initMobileNav();
+
+    // Testimonials
+    let tIdx = 0;
+    function goT(i) {
+      document.querySelectorAll('.t-slide').forEach((s,j) => s.classList.toggle('active', j===i));
+      document.querySelectorAll('.t-dot').forEach((d,j) => d.classList.toggle('active', j===i));
+      tIdx = i;
+    }
+    setInterval(() => goT((tIdx+1)%3), 5000);
+
+    // Newsletter
+    function subscribe() {
+      const email = document.getElementById('nlEmail').value;
+      const note = document.getElementById('nlNote');
+      if (!email || !email.includes('@')) { note.textContent = 'Please enter a valid email.'; note.style.color='var(--rust)'; return; }
+      note.textContent = '✓ Welcome to the inner circle!';
+      note.style.color = 'var(--green)';
+      document.getElementById('nlEmail').value = '';
+    }
+  </script>
+</body>
+</html>
